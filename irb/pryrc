@@ -111,3 +111,5 @@ module CodeRay
     end
   end
 end
+
+I18n.locale = :en if defined?(I18n)
