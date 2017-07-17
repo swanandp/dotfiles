@@ -36,6 +36,13 @@ rescue LoadError => err
   puts "gem install awesome_print  # <-- highly recommended"
 end
 
+begin
+  $: << '/Users/swanand/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/terminal-table-1.7.0/lib/'
+  require '/Users/swanand/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/terminal-table-1.7.0/lib/terminal-table.rb'
+rescue LoadError => err
+  puts "gem install terminal-table  # <-- highly recommended"
+end
+
 # === CUSTOM COMMANDS ===
 # from: https://gist.github.com/1297510
 default_command_set = Pry::CommandSet.new do
@@ -113,3 +120,4 @@ module CodeRay
 end
 
 I18n.locale = :en if defined?(I18n)
+Pry.commands.delete '.<shell command>'
