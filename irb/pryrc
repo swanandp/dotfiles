@@ -8,7 +8,14 @@ Pry.commands.alias_command 'n', 'next' rescue nil
 
 # === CUSTOM PROMPT ===
 # This prompt shows the ruby version (useful for RVM)
-Pry.prompt = [proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " }, proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " }]
+Pry.config.prompt = Pry::Prompt.new(
+    'custom',
+    'my custom prompt',
+    [
+      proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " }, 
+      proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " },
+    ],
+  )
 
 # === Listing config ===
 # Better colors - by default the headings for methods are too 
@@ -25,23 +32,20 @@ Pry.config.ls.private_method_color = :bright_black
 # awesome_print gem: great syntax colorized printing
 # look at ~/.aprc for more settings for awesome_print
 begin
-  require 'awesome_print'
-  # The following line enables awesome_print for all pry output,
-  # and it also enables paging
-  Pry.config.print = proc {|output, value| Pry::Helpers::BaseHelpers.stagger_output("=> #{value.ai}", output)}
-
-  # If you want awesome_print without automatic pagination, use the line below
-  # Pry.config.print = proc { |output, value| output.puts value.ai }
+  require 'amazing_print'
+  AmazingPrint.pry!
 rescue LoadError => err
-  puts "gem install awesome_print  # <-- highly recommended"
+  puts "#{err.class.name}: #{err.message}"
+  puts err.backtrace.join("\n")
+  puts "gem install amazing_print  # <-- highly recommended"
 end
 
-begin
-  $: << '/Users/swanand/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/terminal-table-1.7.0/lib/'
-  require '/Users/swanand/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/terminal-table-1.7.0/lib/terminal-table.rb'
-rescue LoadError => err
-  puts "gem install terminal-table  # <-- highly recommended"
-end
+# begin
+#   $: << '/Users/swanand/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/terminal-table-1.7.0/lib/'
+#   require '/Users/swanand/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/terminal-table-1.7.0/lib/terminal-table.rb'
+# rescue LoadError => err
+#   puts "gem install terminal-table  # <-- highly recommended"
+# end
 
 # === CUSTOM COMMANDS ===
 # from: https://gist.github.com/1297510
